@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.movieSearch{
+  border-radius: 12px 0 0 12px ;
+  margin-right: -250px;
+}
+
+.movieSearch:focus{
+  outline: none;
+}
+
+.search-button{
+  margin-left: -200px;
+}
+
+.search-button :focus{
+  outline: none;
+}
