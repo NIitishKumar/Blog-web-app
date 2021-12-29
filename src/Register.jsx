@@ -16,7 +16,7 @@ function Register() {
   };
 
   const handleSubmit = () => {
-    axios.post("http://localhost:5000/register", userData).then((res) => {
+    axios.post("https://back-end-blogapp.herokuapp.com/register", userData).then((res) => {
       if (res.data.status == 1) {
         const token = window.localStorage.setItem("token", res.data.token);
         setTimeout(() => {

@@ -41,7 +41,7 @@ function HomePage() {
     setblogData({ ...blogData, userID: id.slice(1, id.length) });
     console.log(blogData);
     if (blogData.userID) {
-      axios.post("http://localhost:5000/saveBlog", blogData).then((res) => {
+      axios.post("https://back-end-blogapp.herokuapp.com/saveBlog", blogData).then((res) => {
         console.log(res);
         if (res.data.status === 1) {
           setcreateEnable(false);
@@ -57,7 +57,7 @@ function HomePage() {
       userid = id.slice(1, id.length);
     }
 
-    axios.get("/allBlogs").then((res) => {
+    axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
       res.data.map((data) => {
         console.log(data.userID, userid);
         if (data.userId === userid) {

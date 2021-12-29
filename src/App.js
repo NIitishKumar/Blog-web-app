@@ -18,7 +18,7 @@ function App() {
   }, []);
 
   // if (token) {
-  //   axios.post("http://localhost:5000/token_login", { token }).then((res) => {
+  //   axios.post("https://back-end-blogapp.herokuapp.com/token_login", { token }).then((res) => {
   //     if (res.data.email) {
   //     }
   //   });
@@ -26,7 +26,7 @@ function App() {
 
   const handleSubmit = (e) => {
     // e.preventDefault();
-    axios.post("http://localhost:5000/login", userData).then((res) => {
+    axios.post("https://back-end-blogapp.herokuapp.com/login", userData).then((res) => {
       console.log("dsfffffff", res, e);
       if (res.data.status == 1) {
         console.log(res.data);
