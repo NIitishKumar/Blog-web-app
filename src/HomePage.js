@@ -137,7 +137,7 @@ function HomePage() {
             {createEnable ? (
               <form className="writeForm">
                 <div class="form-group">
-                  <label for="exampleFormControlTextarea2">Title</label>
+                  <label for="exampleFormControlTextarea2"><strong>Title</strong></label>
                   <textarea
                     class="form-control rounded-0"
                     id="exampleFormControlTextarea2"
@@ -147,7 +147,7 @@ function HomePage() {
                   ></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Description</label>
+                  <label for="exampleFormControlTextarea1"><strong>Description</strong></label>
                   <textarea
                     class="form-control rounded-0"
                     id="exampleFormControlTextarea1"
