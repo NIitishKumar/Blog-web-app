@@ -28,7 +28,7 @@ function AdminLogin() {
       if (res.data.status === 1) {
         let token = res.data.token
         window.localStorage.setItem('token' ,token)
-        alert("Logged in")
+        history.push('/allData')
       } else {
         alert('Unauthrized Access !')
       }

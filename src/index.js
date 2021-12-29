@@ -13,6 +13,7 @@ import Register from "./Register";
 import HomePage from "./HomePage";
 import PrivateRoute from "./auth/auth";
 import AdminLogin from './AdminLogin'
+import AllData from './allData'
 
 ReactDOM.render(
   <Router>
@@ -23,6 +24,7 @@ ReactDOM.render(
       <Route exact path="/register" component={Register} />
       {/* <Route exact path='/homw' component={Register}/> */}
       {/* {console.log(window.localStorage.getItem("token"))} */}
+      <PrivateRoute exact path='/allData'><AllData /></PrivateRoute>
       <PrivateRoute exact path="/:id">
         {/* {window.localStorage.getItem("token") ? ( */}
         <HomePage />
