@@ -37,7 +37,7 @@ function App() {
           window.location.reload();
         }, 1000);
       } else {
-        alert("Email Not Registered !");
+        alert("Not Registered !");
       }
     });
   };

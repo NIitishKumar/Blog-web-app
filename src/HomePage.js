@@ -87,7 +87,7 @@ function HomePage() {
       userid = id.slice(1, id.length);
     }
 
-    axios.get("/allBlogs").then((res) => {
+    axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
       res.data.map((data) => {
         console.log(data.userID, userid);
         if (data.userId === userid) {
