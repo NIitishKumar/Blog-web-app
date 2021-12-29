@@ -40,6 +40,8 @@ function AdminLogin() {
         <div class="container">
             <div class="row justify-content-md-center" >
               <div class="col col-lg-6">
+              <h1>Please Login to Continue</h1>
+              <br/>
                 <button className='btn btn-info mb-3' style={{'margin-botttom' : '10px'}} onClick={loginClick} > USER LOGIN </button> <span> </span>
                 <button className='btn btn-info mb-3' style={{'margin-botttom' : '10px'}} onClick={adminLoginClick} > ADMIN LOGIN </button>
                 <br/>

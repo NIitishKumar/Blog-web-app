@@ -35,6 +35,8 @@ function Register() {
       <div class="container">
           <div class="row justify-content-md-center" >
             <div class="col col-lg-6">
+              <h1>Signup to Continue</h1>
+              <br/>
                   <div className="form-group">
                     <label for="fullName">Full Name</label>
                     <input
