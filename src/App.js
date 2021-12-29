@@ -10,12 +10,12 @@ function App() {
   const token = localStorage.getItem("token");
   const [userId, setuserId] = useState("");
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      history.push("/");
-      window.location.reload();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     history.push("/");
+  //     window.location.reload();
+  //   }
+  // }, []);
 
   // if (token) {
   //   axios.post("https://back-end-blogapp.herokuapp.com/token_login", { token }).then((res) => {
@@ -50,50 +50,57 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <br />
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <div className="form-group">
-          <label for="inputEmail">Email address</label>
-          <input
-            type="email"
-            id="inputEmail"
-            aria-describedby="emailHelp"
-            name="email"
-            onChange={handleChange}
-            class="form-control"
-            placeholder="Enter Email"
-          ></input>
-        </div>
-        <br />
-        <div className="form-group">
-          <label for="inputPassword">Enter Password</label>
-          <input
-            className="form-control"
-            type="password"
-            id="inputPassword"
-            name="password"
-            onChange={handleChange}
-            placeholder="Enter Password"
-          ></input>
-        </div>
-        <br />
-        <button type="submit" className="btn btn-primary  ">
-          Submit
-        </button>
-      </form>
-      <br />
-      <a href="/register">
-        <button type="submit" className="btn btn-primary  ">
-          Register
-        </button>
-      </a>
-    </div>
+    <div className='' style={{margin : '50px'}} >
+      <div class="container">
+          <div class="row justify-content-md-center" >
+            <div class="col col-lg-6">
+            <br />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
+              <div className="form-group">
+                <label for="inputEmail">Email address</label>
+                <input
+                  type="email"
+                  id="inputEmail"
+                  aria-describedby="emailHelp"
+                  name="email"
+                  onChange={handleChange}
+                  class="form-control"
+                  placeholder="Enter Email"
+                ></input>
+              </div>
+              <br />
+              <div className="form-group">
+                <label for="inputPassword">Enter Password</label>
+                <input
+                  className="form-control"
+                  type="password"
+                  id="inputPassword"
+                  name="password"
+                  onChange={handleChange}
+                  placeholder="Enter Password"
+                ></input>
+              </div>
+              <br />
+              <button type="submit" className="btn btn-secondary  ">
+                Submit
+              </button>
+            </form>
+            <br />
+            <a href="/register">
+              <button type="submit" className="btn btn-info  ">
+                Register
+              </button>
+            </a>
+
+          </div>
+          </div>
+          </div>
+          </div>
   );
 }
 

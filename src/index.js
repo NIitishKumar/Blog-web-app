@@ -12,10 +12,12 @@ import {
 import Register from "./Register";
 import HomePage from "./HomePage";
 import PrivateRoute from "./auth/auth";
+import AdminLogin from './AdminLogin'
 
 ReactDOM.render(
   <Router>
     <Switch>
+      <Route exact path="/" component={AdminLogin} />
       <Route exact path="/login" component={App} />
       {/* <Route exact path="/" component={App} /> */}
       <Route exact path="/register" component={Register} />
