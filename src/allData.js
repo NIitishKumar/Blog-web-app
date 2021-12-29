@@ -62,7 +62,7 @@ function AllData() {
                                     {
                                         users ? users.map(userData => {
                                                 if (userData._id === res.userID) {
-                                                    return <span className='float-right' >Name : {userData.name}</span>
+                                                    return <span className='float-right' ><strong>Name</strong> : {userData.name}</span>
                                                 }
                                         }) : ''
                                         }
