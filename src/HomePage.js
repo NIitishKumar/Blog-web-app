@@ -12,6 +12,7 @@ function HomePage() {
   const [blogData, setblogData] = useState();
   const [showBlog, setshowBlog] = useState(false);
   const [allBlogs, setallBlogs] = useState([]);
+  const [isUser, setisUser] = useState(false)
 
   const { id } = useParams();
 
@@ -68,6 +69,14 @@ function HomePage() {
 
       setallBlogs(res);
       setshowBlog(true);
+      if (res.data) {
+        res.data.map(res => {
+          if (res.userID === userid) {
+            setisUser(true)
+          }
+        })
+      }
+      console.log(res,userid);
     });
   }, []);
 
@@ -162,9 +171,6 @@ function HomePage() {
             <br />
             {showBlog ? (
               <span>
-                <h1>
-                  <i>Your Blogs</i>
-                </h1>
                 {console.log(allBlogs.data)}
                 {allBlogs.data.length > 0
                   ? allBlogs.data.map((res) => {
@@ -186,11 +192,12 @@ function HomePage() {
                         );
                       }
                     })
-                  : ""}
+                  : <><p>No Blogs, Create now</p></>}
               </span>
             ) : (
               ""
             )}
+            {/* {isUser && showBlog ?'': <h3>No Blogs, Create now</h3>} */}
           </div>
         </div>
       </section>
