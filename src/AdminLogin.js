@@ -23,7 +23,7 @@ function AdminLogin() {
   }
 
   const login = () => {
-    axios.post('http://localhost:5000/adminLogin', adminData).then(res => {
+    axios.post('https://back-end-blogapp.herokuapp.com/adminLogin', adminData).then(res => {
       console.log(res);
       if (res.data.status === 1) {
         let token = res.data.token
