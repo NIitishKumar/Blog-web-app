@@ -12,27 +12,30 @@ import {
 import Register from "./Register";
 import HomePage from "./HomePage";
 import PrivateRoute from "./auth/auth";
-import AdminLogin from './AdminLogin'
-import AllData from './allData'
+import AdminLogin from "./AdminLogin";
+import AllData from "./allData";
+import Store from "./store";
+import { Provider } from "react-redux";
 
 ReactDOM.render(
-  <Router>
-    <Switch>
-      <Route exact path="/" component={AdminLogin} />
-      <Route exact path="/login" component={App} />
-      {/* <Route exact path="/" component={App} /> */}
-      <Route exact path="/register" component={Register} />
-      {/* <Route exact path='/homw' component={Register}/> */}
-      {/* {console.log(window.localStorage.getItem("token"))} */}
-      <PrivateRoute exact path='/allData'><AllData /></PrivateRoute>
-      <PrivateRoute exact path="/:id">
-        {/* {window.localStorage.getItem("token") ? ( */}
-        <HomePage />
-        {/* ) : (
-          <Redirect to="/login"></Redirect> */}
-      </PrivateRoute>
-    </Switch>
-  </Router>,
+  <Provider store={Store}>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={AdminLogin} />
+        <Route exact path="/login" component={App} />
+        {/* <Route exact path="/" component={App} /> */}
+        <Route exact path="/register" component={Register} />
+        {/* <Route exact path='/homw' component={Register}/> */}
+        {/* {console.log(window.localStorage.getItem("token"))} */}
+        <PrivateRoute exact path="/allData">
+          <AllData />
+        </PrivateRoute>
+        <PrivateRoute exact path="/userBlog">
+          <HomePage />
+        </PrivateRoute>
+      </Switch>
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
 

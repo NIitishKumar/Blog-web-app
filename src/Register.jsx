@@ -2,11 +2,15 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserDataFunc } from "./action/index";
 
 function Register() {
   let history = useHistory();
   const [userData, setUserData] = useState({});
-  const [userId, setuserId] = useState("");
+
+  const dispatch = useDispatch();
+  let state = useSelector((state) => state.handleChange);
 
   const handleChange = (e) => {
     setUserData({
@@ -16,16 +20,17 @@ function Register() {
   };
 
   const handleSubmit = () => {
-    console.log(userData["name"]);
     if (userData["name"] && userData["email"] && userData["password"]) {
       axios
         .post("https://back-end-blogapp.herokuapp.com/register", userData)
         .then((res) => {
           if (res.data.status == 1) {
             const token = window.localStorage.setItem("token", res.data.token);
+            console.log(res.data);
+            dispatch(getUserDataFunc({ ...userData, id: res.data.userId }));
+
             setTimeout(() => {
-              history.push(`/:${res.data.userId}`);
-              window.location.reload();
+              history.push(`/userBlog`);
             }, 1000);
           } else {
             alert(res.data.message);

@@ -1,10 +1,8 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ReactPaginate from "react-paginate";
-import Pagination from "rc-pagination";
-import Select from "react-select";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 function HomePage() {
   const history = useHistory();
@@ -12,16 +10,39 @@ function HomePage() {
   const [blogData, setblogData] = useState();
   const [showBlog, setshowBlog] = useState(false);
   const [allBlogs, setallBlogs] = useState([]);
-  const [isUser, setisUser] = useState(false)
+  const [isBlog, setisBlog] = useState(false);
+  const [user, setuser] = useState({});
 
-  const { id } = useParams();
+  // const { id } = useParams();
+
+  let state = useSelector((state) => state.handleChange);
+
+  // useEffect(() => {
+  //   if (state.payload) {
+  //     setuser(state.payload);
+  //   } else {
+  //     history.push("/");
+  //   }
+  // }, []);
+
+  useEffect(async () => {
+    await axios
+      .get("https://back-end-blogapp.herokuapp.com/allBlogs")
+      .then((res) => {
+        res.data.map((data) => {
+          if (data.userID == state.payload.id) {
+            allBlogs.push(res);
+            setisBlog(true);
+          }
+        });
+        setallBlogs(res);
+        setshowBlog(true);
+      });
+  }, []);
 
   const logOutClick = () => {
     localStorage.removeItem("token");
-    setTimeout(() => {
-      history.push("/login");
-      window.location.reload();
-    }, 1000);
+    history.push("/login");
   };
 
   const handleChange = (e) => {
@@ -33,72 +54,40 @@ function HomePage() {
     setshowBlog(false);
   };
 
-  const submitBlog = (e) => {
+  const submitBlog = async (e) => {
     e.preventDefault();
     setblogData({
       ...blogData,
       ["token"]: window.localStorage.getItem("token"),
+      userID: user.id,
     });
-    setblogData({ ...blogData, userID: id.slice(1, id.length) });
-    console.log(blogData);
     if (blogData.userID) {
-      axios.post("https://back-end-blogapp.herokuapp.com/saveBlog", blogData).then((res) => {
-        console.log(res);
-        if (res.data.status === 1) {
-          setcreateEnable(false);
-          handleAllBlogs();
-        }
-      });
+      await axios
+        .post("https://back-end-blogapp.herokuapp.com/saveBlog", blogData)
+        .then((res) => {
+          if (res.data.status === 1) {
+            setcreateEnable(false);
+            handleAllBlogs();
+            console.log("Blog Submitted");
+          }
+        });
     }
   };
 
-  useEffect(() => {
-    let userid;
-    if (id) {
-      userid = id.slice(1, id.length);
-    }
-
-    axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
-      res.data.map((data) => {
-        console.log(data.userID, userid);
-        if (data.userId === userid) {
-          allBlogs.push(res);
-        }
-      });
-      // console.log(res.data);
-
-      setallBlogs(res);
-      setshowBlog(true);
-      if (res.data) {
-        res.data.map(res => {
-          if (res.userID === userid) {
-            setisUser(true)
-          }
-        })
-      }
-      console.log(res,userid);
-    });
-  }, []);
-
-  const handleAllBlogs = () => {
+  const handleAllBlogs = async () => {
     let allBlogs = [];
-    let userid;
-    if (id) {
-      userid = id.slice(1, id.length);
-    }
 
-    axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
-      res.data.map((data) => {
-        console.log(data.userID, userid);
-        if (data.userId === userid) {
-          allBlogs.push(res);
-        }
+    await axios
+      .get("https://back-end-blogapp.herokuapp.com/allBlogs")
+      .then((res) => {
+        res.data.map((data) => {
+          if (data.userId === user.id) {
+            allBlogs.push(res);
+          }
+        });
+        setallBlogs(res);
+        setshowBlog(true);
       });
-      // console.log(res.data);
-
-      setallBlogs(res);
-      setshowBlog(true);
-    });
     setcreateEnable(false);
   };
 
@@ -129,75 +118,87 @@ function HomePage() {
               Log Out
             </button>
             <br />
-            {/* <img
-              className="writeImg"
-              src="https://images.pexels.com/photos/6685428/pexels-photo-6685428.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
-            /> */}
             {createEnable ? (
-              <form className="writeForm">
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea2"><strong>Title</strong></label>
-                  <textarea
-                    class="form-control rounded-0"
-                    id="exampleFormControlTextarea2"
-                    rows="3"
-                    name="title"
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea1"><strong>Description</strong></label>
-                  <textarea
-                    class="form-control rounded-0"
-                    id="exampleFormControlTextarea1"
-                    rows="10"
-                    name="description"
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
+              <>
+                <h1 className="mt-3 mb-2 fs-1 fw-bold">Create Blog</h1>
+                <form className="writeForm">
+                  <div class="form-group fw-bold">
+                    <label for="exampleFormControlTextarea2">
+                      <strong>Title</strong>
+                    </label>
+                    <textarea
+                      class="form-control rounded-0"
+                      id="exampleFormControlTextarea2"
+                      rows="3"
+                      name="title"
+                      onChange={handleChange}
+                    ></textarea>
+                  </div>
+                  <div class="form-group fw-bold">
+                    <label for="exampleFormControlTextarea1">
+                      <strong>Description</strong>
+                    </label>
+                    <textarea
+                      class="form-control rounded-0"
+                      id="exampleFormControlTextarea1"
+                      rows="10"
+                      name="description"
+                      onChange={handleChange}
+                    ></textarea>
+                  </div>
 
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  onClick={submitBlog}
-                >
-                  Submit
-                </button>
-              </form>
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    onClick={submitBlog}
+                  >
+                    Submit
+                  </button>
+                </form>
+              </>
             ) : (
               ""
             )}
             <br />
             {showBlog ? (
               <span>
-                {console.log(allBlogs.data)}
-                {allBlogs.data.length > 0
-                  ? allBlogs.data.map((res) => {
-                      console.log(res.userID, id);
-                      if (res.userID === id.slice(1, id.length)) {
-                        return (
-                          <>
-                            <br />
-                            <div class="card">
-                              <div class="card-header">Title : {res.title}</div>
-                              <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                  <p>Description : {res.description}</p>
-                                  {/* <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer> */}
-                                </blockquote>
+                {allBlogs.data.length > 0 ? (
+                  <>
+                    <div>
+                      <h1 className="fw-bold">
+                        {isBlog ? "All Blogs" : "Oops, No Blog, Create now !"}
+                      </h1>
+                      {allBlogs.data.map((res) => {
+                        if (user.id === res.userID) {
+                          return (
+                            <>
+                              <br />
+                              <div class="card">
+                                <div class="card-header">
+                                  Title : {res.title}
+                                  <a className="float-right text-decoration-none capitalize">
+                                    {user ? user.email : ""}
+                                  </a>
+                                </div>
+                                <div class="card-body">
+                                  <blockquote class="blockquote mb-0">
+                                    <p>Description : {res.description}</p>
+                                  </blockquote>
+                                </div>
                               </div>
-                            </div>
-                          </>
-                        );
-                      }
-                    })
-                  : <><p>No Blogs, Create now</p></>}
+                            </>
+                          );
+                        }
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </span>
             ) : (
               ""
             )}
-            {/* {isUser && showBlog ?'': <h3>No Blogs, Create now</h3>} */}
           </div>
         </div>
       </section>

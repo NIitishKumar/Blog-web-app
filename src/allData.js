@@ -7,15 +7,13 @@ function AllData() {
   const [users, setusers] = useState([]);
   const [showUser, setshowUser] = useState(false);
 
-  const loginClick = () => {
+  const logOutClick = () => {
     localStorage.removeItem("token");
-    window.location.reload();
   };
 
   useEffect(() => {
     axios.get("https://back-end-blogapp.herokuapp.com/allusers").then((res) => {
       setusers(res.data);
-      console.log(res.data);
     });
 
     axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
@@ -56,7 +54,7 @@ function AllData() {
         <button
           className="btn btn-info mb-3 float-right mr-2"
           style={{ "margin-botttom": "10px" }}
-          onClick={loginClick}
+          onClick={logOutClick}
         >
           {" "}
           Log Out
