@@ -1,14 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function AllData() {
   const [allBlogs, setallBlogs] = useState([]);
   const [users, setusers] = useState([]);
   const [showUser, setshowUser] = useState(false);
 
+  const history = useHistory();
+
   const logOutClick = () => {
     localStorage.removeItem("token");
+    history.push("/");
   };
 
   useEffect(() => {
