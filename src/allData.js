@@ -27,11 +27,33 @@ function AllData() {
     });
   }, []);
 
+  const getAllBlogs = () => {
+    axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
+      console.log(res.data);
+
+      setallBlogs(res.data);
+    });
+  };
+
   const userClick = () => {
     setshowUser(true);
   };
   const blogClick = () => {
     setshowUser(false);
+  };
+
+  const deleteBlog = async (id) => {
+    console.log(id);
+    if (id) {
+      await axios
+        .post("https://back-end-blogapp.herokuapp.com/removeBlog", { id: id })
+        .then((res) => {
+          if (res.data.status === 1) {
+            getAllBlogs();
+            alert("Blog deleted !");
+          }
+        });
+    }
   };
 
   return (
@@ -80,15 +102,25 @@ function AllData() {
                         <>
                           <br />
                           <div class="card">
+                            {console.log(res)}
                             <div class="card-header">
-                              Title : {res.title}
+                              <strong>Title</strong> : {res.title}
+                              <button
+                                className="btn btn-secondary float-right"
+                                onClick={() => deleteBlog(res._id)}
+                              >
+                                Delete
+                              </button>
                               {users
                                 ? users.map((userData) => {
                                     if (userData._id === res.userID) {
                                       return (
-                                        <span className="float-right">
-                                          <strong>Name</strong> :{" "}
-                                          {userData.name}
+                                        <span className="float-right mr-3 mt-2">
+                                          <strong>
+                                            {" "}
+                                            <span> </span> Writer
+                                          </strong>{" "}
+                                          : {userData.name}
                                         </span>
                                       );
                                     }
