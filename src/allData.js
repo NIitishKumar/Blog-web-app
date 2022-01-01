@@ -31,6 +31,12 @@ function AllData() {
     });
   };
 
+  const getAllUser = () => {
+    axios.get("https://back-end-blogapp.herokuapp.com/allusers").then((res) => {
+      setusers(res.data);
+    });
+  };
+
   const userClick = () => {
     setshowUser(true);
   };
@@ -57,7 +63,7 @@ function AllData() {
         .post("https://back-end-blogapp.herokuapp.com/removeUser", { id: id })
         .then((res) => {
           if (res.data.status === 1) {
-            getAllBlogs();
+            getAllUser();
             alert("User deleted !");
           }
         });
