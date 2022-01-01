@@ -21,16 +21,12 @@ function AllData() {
     });
 
     axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
-      console.log(res.data);
-
       setallBlogs(res.data);
     });
   }, []);
 
   const getAllBlogs = () => {
     axios.get("https://back-end-blogapp.herokuapp.com/allBlogs").then((res) => {
-      console.log(res.data);
-
       setallBlogs(res.data);
     });
   };
@@ -43,7 +39,6 @@ function AllData() {
   };
 
   const deleteBlog = async (id) => {
-    console.log(id);
     if (id) {
       await axios
         .post("https://back-end-blogapp.herokuapp.com/removeBlog", { id: id })
@@ -51,6 +46,19 @@ function AllData() {
           if (res.data.status === 1) {
             getAllBlogs();
             alert("Blog deleted !");
+          }
+        });
+    }
+  };
+
+  const deleteUser = async (id) => {
+    if (id) {
+      await axios
+        .post("https://back-end-blogapp.herokuapp.com/removeUser", { id: id })
+        .then((res) => {
+          if (res.data.status === 1) {
+            getAllBlogs();
+            alert("User deleted !");
           }
         });
     }
@@ -102,14 +110,13 @@ function AllData() {
                         <>
                           <br />
                           <div class="card">
-                            {console.log(res)}
                             <div class="card-header">
                               <strong>Title</strong> : {res.title}
                               <button
                                 className="btn btn-secondary float-right"
                                 onClick={() => deleteBlog(res._id)}
                               >
-                                Delete
+                                Delete Blog
                               </button>
                               {users
                                 ? users.map((userData) => {
@@ -129,7 +136,10 @@ function AllData() {
                             </div>
                             <div class="card-body">
                               <blockquote class="blockquote mb-0">
-                                <p>Description : {res.description}</p>
+                                <p>
+                                  <strong>Description</strong> :{" "}
+                                  {res.description}
+                                </p>
                               </blockquote>
                             </div>
                           </div>
@@ -161,6 +171,12 @@ function AllData() {
                             <div class="card-header">
                               <strong>Name : </strong>
                               {res.name}
+                              <button
+                                className="btn btn-secondary float-right"
+                                onClick={() => deleteUser(res._id)}
+                              >
+                                Delete User
+                              </button>
                             </div>
                             <div class="card-body">
                               <blockquote class="blockquote mb-0">
