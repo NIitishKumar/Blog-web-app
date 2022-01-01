@@ -26,9 +26,12 @@ function Register() {
         .then((res) => {
           if (res.data.status == 1) {
             const token = window.localStorage.setItem("token", res.data.token);
-            console.log(res.data);
             dispatch(getUserDataFunc({ ...userData, id: res.data.userId }));
 
+            localStorage.setItem(
+              "user",
+              JSON.stringify({ ...userData, id: res.data.userId })
+            );
             setTimeout(() => {
               history.push(`/userBlog`);
             }, 1000);

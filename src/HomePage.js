@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { getUserDataFunc } from "./action/index";
 
 function HomePage() {
   const history = useHistory();
@@ -14,16 +15,16 @@ function HomePage() {
   const [user, setuser] = useState({});
 
   // const { id } = useParams();
+  let dispatch = useDispatch();
 
   let state = useSelector((state) => state.handleChange);
 
-  // useEffect(() => {
-  //   if (state.payload) {
-  //     setuser(state.payload);
-  //   } else {
-  //     history.push("/");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!state.payload) {
+      state = { payload: JSON.parse(localStorage.getItem("user")) };
+      dispatch(getUserDataFunc(JSON.parse(localStorage.getItem("user"))));
+    }
+  }, [state]);
 
   useEffect(async () => {
     await axios
@@ -42,11 +43,17 @@ function HomePage() {
 
   const logOutClick = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     history.push("/login");
   };
 
   const handleChange = (e) => {
-    setblogData({ ...blogData, [e.target.name]: e.target.value });
+    setblogData({
+      ...blogData,
+      [e.target.name]: e.target.value,
+      ["token"]: window.localStorage.getItem("token"),
+      userID: state.payload.id,
+    });
   };
 
   const handleCreateBlog = () => {
@@ -56,16 +63,16 @@ function HomePage() {
 
   const submitBlog = async (e) => {
     e.preventDefault();
-    setblogData({
-      ...blogData,
-      ["token"]: window.localStorage.getItem("token"),
-      userID: user.id,
-    });
     if (blogData.userID) {
       await axios
-        .post("https://back-end-blogapp.herokuapp.com/saveBlog", blogData)
+        .post("https://back-end-blogapp.herokuapp.com/saveBlog", {
+          ...blogData,
+          ["token"]: window.localStorage.getItem("token"),
+          userID: state.payload.id,
+        })
         .then((res) => {
           if (res.data.status === 1) {
+            setisBlog(true);
             setcreateEnable(false);
             handleAllBlogs();
             console.log("Blog Submitted");
@@ -81,7 +88,7 @@ function HomePage() {
       .get("https://back-end-blogapp.herokuapp.com/allBlogs")
       .then((res) => {
         res.data.map((data) => {
-          if (data.userId === user.id) {
+          if (data.userId === state.payload.id) {
             allBlogs.push(res);
           }
         });
@@ -169,7 +176,7 @@ function HomePage() {
                         {isBlog ? "All Blogs" : "Oops, No Blog, Create now !"}
                       </h1>
                       {allBlogs.data.map((res) => {
-                        if (user.id === res.userID) {
+                        if (state.payload.id === res.userID) {
                           return (
                             <>
                               <br />

@@ -1,6 +1,6 @@
-let initialState = [];
+let initialState = ["initialState"];
 
-export const handleChange = (state = "initialState", action) => {
+export const handleChange = (state = initialState, action) => {
   switch (action.type) {
     case action.type:
       return action;
