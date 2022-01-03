@@ -37,12 +37,7 @@ function App() {
         // console.log("dsfffffff", res, e);
         if (userData["email"] && userData["password"]) {
           if (res.data.status == 1) {
-            // console.log(res.data);
             dispatch(getUserDataFunc({ ...userData, id: res.data.userId }));
-            localStorage.setItem(
-              "user",
-              JSON.stringify({ ...userData, id: res.data.userId })
-            );
             setuserId(res.data.userId);
             const token = window.localStorage.setItem("token", res.data.token);
             setTimeout(() => {

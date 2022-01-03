@@ -18,14 +18,6 @@ function HomePage() {
   let dispatch = useDispatch();
 
   let state = useSelector((state) => state.handleChange);
-
-  useEffect(() => {
-    if (!state.payload) {
-      state = { payload: JSON.parse(localStorage.getItem("user")) };
-      dispatch(getUserDataFunc(JSON.parse(localStorage.getItem("user"))));
-    }
-  }, [state]);
-
   useEffect(async () => {
     await axios
       .get("https://back-end-blogapp.herokuapp.com/allBlogs")
@@ -43,7 +35,6 @@ function HomePage() {
 
   const logOutClick = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     history.push("/login");
   };
 

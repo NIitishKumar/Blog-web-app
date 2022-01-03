@@ -14,11 +14,16 @@ import HomePage from "./HomePage";
 import PrivateRoute from "./auth/auth";
 import AdminLogin from "./AdminLogin";
 import AllData from "./allData";
-import Store from "./store";
+import configureStore from "./store";
 import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistReducer } from "redux-persist/integration/react";
+
+const { store, persistor } = configureStore();
 
 ReactDOM.render(
-  <Provider store={Store}>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
     <Router>
       <Switch>
         <Route exact path="/" component={AdminLogin} />
@@ -34,7 +39,8 @@ ReactDOM.render(
           <HomePage />
         </PrivateRoute>
       </Switch>
-    </Router>
+      </Router>
+      </PersistGate>
   </Provider>,
   document.getElementById("root")
 );
